@@ -1,6 +1,9 @@
-// this interpreter is run through the command like with the program code as the args
-// eg: ./brainfuck "++++++++++[>+++++++>++++++++++>+++>+<<<<-]>++.>+.+++++++..+++.>++.<<+++++++++++++++.>.+++.------.--------.>+.>." will print hello world
-// source: https://gist.github.com/lifthrasiir/596667
+// This interpreter is run through the command like with the program code as the args.
+//
+//  eg: ./bf "++++++++++[>+++++++>++++++++++>+++>+<<<<-]>++.>+.+++++++..+++.>++.<<+++++++++++++++.>.+++.------.--------.>+.>."
+//     will print hello world
+//
+// Source: https://gist.github.com/lifthrasiir/596667 (written by Kang Seonghoon).
 
 s[99],*r=s,*d,c;
 main(a,b)
