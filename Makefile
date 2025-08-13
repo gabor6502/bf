@@ -1,7 +1,17 @@
+CC=gcc
+
+# requires gcc-multilib to be installed
+BFFLAGS = -m32 
+BFSOURCE = brainfuck.c
+BFTARGET = bf
+
+INTERPSOURCE = main.c
+INTERPTARGET = brain
+
 all:
-	gcc -m32 brainfuck.c -o bf
-	gcc main.c -o main
+	$(CC) $(BFFLAGS) $(BFSOURCE) -o $(BFTARGET)
+	$(CC) $(INTERPSOURCE) -o $(INTERPTARGET)
 
 clean:
-	rm -f bf
-	rm -f main
+	$(RM) -f $(BFTARGET)
+	$(RM) -f $(INTERPTARGET)

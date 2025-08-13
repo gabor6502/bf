@@ -9,7 +9,7 @@ int main(int argc, char *argv[])
     char * programName = getProgramName(argc, argv);
     char * program = readFile(programName);
 
-    // test
+    // test - print to console
     printf("%s\n", program);
 
     free(program);
