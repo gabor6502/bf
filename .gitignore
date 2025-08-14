@@ -1,4 +1,4 @@
-/bf
-/brain
-/*.o
+/filerunner/bf
+/filerunner/brain
+/**/*.o
 .vscode

@@ -14,17 +14,21 @@ OBJS = bfreader.o
 BFREADER__H = ./bfreader/bfreader.h
 BFREADER_C = ./bfreader/bfreader.c
 
-all: brain
+all: brain bfcompiler
 
+clean: clean-brain clean-bfcompiler
+
+# for brainfuck command line runner
 brain: $(OBJS)
 	$(CC) $(CFLAGS) $(INTERPSOURCE) $(OBJS) -o $(INTERPTARGET) 
 
 bfreader.o: $(BFREADER_H) $(BFREADER_C)
 	$(CC) $(CFLAGS) -c $(BFREADER_C)
 
-clean:
+clean-brain:
 	$(RM) -f $(INTERPTARGET) $(OBJS)
 
+	
 # for brainfuck compiler
 bfcompiler:
 	$(CC) $(BFFLAGS) $(BFSOURCE) -o $(BFTARGET)
