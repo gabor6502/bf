@@ -6,7 +6,7 @@ BFFLAGS = -m32 -w
 BFSOURCE = brainfuck.c
 BFTARGET = bf
 
-INTERPSOURCE = main.c
+INTERPSOURCE = filerunner_main.c
 INTERPTARGET = brain
 
 OBJS = bfreader.o
