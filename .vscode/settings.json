@@ -1,0 +1,6 @@
+{
+    "files.associations": {
+        "bfreader.h": "c",
+        "cstdlib": "c"
+    }
+}

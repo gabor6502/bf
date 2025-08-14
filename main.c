@@ -5,14 +5,46 @@
 #include <sys/wait.h>
 #include <signal.h>
 
-char * readFile(const char * bfFile);
-char * getProgramName(int argc, char *argv[]);
+#include "bfreader/bfreader.h"
+
+char * readProgramName(int argc, char *argv[]);
+void runBF(BF_reader * bf);
 
 int main(int argc, char *argv[])
 {
-    char * programName = getProgramName(argc, argv);
-    char * program = readFile(programName);
+    char * programName = readProgramName(argc, argv);
 
+    BF_reader * bf = createReader(programName);
+
+    if (!bf)
+    {
+        fprintf(stderr, "Failed read file: %s.\n", programName);
+        exit(EXIT_FAILURE);
+    }
+
+    runBF(bf);
+   
+    destroyReader(bf);
+
+    printf("\nEnd of line.\n");
+    return 0;
+}
+
+char * readProgramName(int argc, char *argv[])
+{
+    if (argc == 2)
+    {
+        return argv[1];
+    }
+    else
+    {
+        fprintf(stderr, "Invalid arguments supplied.\n");
+        exit(EXIT_FAILURE);
+    }
+}
+
+void runBF(BF_reader * bf)
+{
     // - fork and exec -
     pid_t pid = fork();
     int status;
@@ -24,7 +56,7 @@ int main(int argc, char *argv[])
     }
     else if (pid == 0) // child process
     {
-        execl("./bf", "./bf", program, (char*) NULL);
+        execl("./bf", "./bf", bf->bf_program, (char*) NULL);
 
         fprintf(stderr, "Something went wrong before BF compiler execution.\n");
         exit(EXIT_FAILURE);
@@ -38,51 +70,4 @@ int main(int argc, char *argv[])
             fprintf(stderr, "BF Compiler segmentation fault.\n");
         }  
     }
-   
-    free(program);
-
-    printf("\nEnd of line.\n");
-    return 0;
-}
-
-char * getProgramName(int argc, char *argv[])
-{
-    if (argc == 2)
-    {
-        return argv[1];
-    }
-    else
-    {
-        fprintf(stderr, "Invalid arguments supplied.\n");
-        exit(EXIT_FAILURE);
-    }
-}
-
-char * readFile(const char * bfFile)
-{
-    char * contents;
-    int length;
-    FILE * file;
-
-    file = fopen(bfFile, "rb");
-
-    if (file)
-    {
-        fseek(file, 0, SEEK_END);
-        length = ftell(file);
-        
-        contents = (char*) malloc(sizeof(char) * length);
-
-        fseek(file, 0, SEEK_SET);
-        fread(contents, 1, length, file);
-
-        fclose(file);
-    }
-    else 
-    {
-        fprintf(stderr, "Couldn't open file %s\n", bfFile);
-        exit(EXIT_FAILURE);
-    }
-
-    return contents;
 }

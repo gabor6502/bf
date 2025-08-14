@@ -9,10 +9,27 @@ BFTARGET = bf
 INTERPSOURCE = main.c
 INTERPTARGET = brain
 
-all:
-	$(CC) $(BFFLAGS) $(BFSOURCE) -o $(BFTARGET)
-	$(CC) $(CFLAGS) $(INTERPSOURCE) -o $(INTERPTARGET)
+OBJS = bfreader.o
+
+BFREADER__H = ./bfreader/bfreader.h
+BFREADER_C = ./bfreader/bfreader.c
+
+all: brain
+
+brain: $(OBJS)
+	$(CC) $(CFLAGS) $(INTERPSOURCE) $(OBJS) -o $(INTERPTARGET) 
+
+bfreader.o: $(BFREADER_H) $(BFREADER_C)
+	$(CC) $(CFLAGS) -c $(BFREADER_C)
 
 clean:
+	$(RM) -f $(INTERPTARGET) $(OBJS)
+
+# for brainfuck compiler
+bfcompiler:
+	$(CC) $(BFFLAGS) $(BFSOURCE) -o $(BFTARGET)
+
+clean-bfcompiler:
 	$(RM) -f $(BFTARGET)
-	$(RM) -f $(INTERPTARGET)
+
+	
