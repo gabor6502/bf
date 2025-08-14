@@ -1,5 +1,9 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <unistd.h>
+#include <sys/types.h>
+#include <sys/wait.h>
+#include <signal.h>
 
 char * readFile(const char * bfFile);
 char * getProgramName(int argc, char *argv[]);
@@ -9,11 +13,35 @@ int main(int argc, char *argv[])
     char * programName = getProgramName(argc, argv);
     char * program = readFile(programName);
 
-    // test - print to console
-    printf("%s\n", program);
+    // - fork and exec -
+    pid_t pid = fork();
+    int status;
 
+    if (pid < 0)
+    {
+        fprintf(stderr, "Failed to start child process.\n");
+        exit(EXIT_FAILURE);
+    }
+    else if (pid == 0) // child process
+    {
+        execl("./bf", "./bf", program, (char*) NULL);
+
+        fprintf(stderr, "Something went wrong before BF compiler execution.\n");
+        exit(EXIT_FAILURE);
+    }
+    else // parent process
+    {
+        waitpid(pid, &status, 0);
+
+        if (WTERMSIG(status) == SIGSEGV)
+        {
+            fprintf(stderr, "BF Compiler segmentation fault.\n");
+        }  
+    }
+   
     free(program);
 
+    printf("\nEnd of line.\n");
     return 0;
 }
 

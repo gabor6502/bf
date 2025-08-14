@@ -1,7 +1,8 @@
 CC=gcc
+CFLAGS=-Wall
 
 # requires gcc-multilib to be installed
-BFFLAGS = -m32 
+BFFLAGS = -m32 -w 
 BFSOURCE = brainfuck.c
 BFTARGET = bf
 
@@ -10,7 +11,7 @@ INTERPTARGET = brain
 
 all:
 	$(CC) $(BFFLAGS) $(BFSOURCE) -o $(BFTARGET)
-	$(CC) $(INTERPSOURCE) -o $(INTERPTARGET)
+	$(CC) $(CFLAGS) $(INTERPSOURCE) -o $(INTERPTARGET)
 
 clean:
 	$(RM) -f $(BFTARGET)
